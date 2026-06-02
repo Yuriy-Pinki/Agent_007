@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLASSIFIED // Q-DIVISION</title>
+<style>
+  :root{
+    --green:#33ff66;
+    --amber:#ffb000;
+    --red:#ff3b3b;
+    --bg:#050805;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    background:var(--bg);
+    color:var(--green);
+    font-family:'Courier New', monospace;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    padding:20px;
+  }
+  /* мерцание/сканлайн как на старом мониторе */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0) 0px,
+      rgba(0,0,0,0) 2px,
+      rgba(0,0,0,0.25) 3px,
+      rgba(0,0,0,0) 4px
+    );
+    pointer-events:none;
+    z-index:5;
+  }
+  body::after{
+    content:"";
+    position:fixed; inset:0;
+    background:radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.85) 100%);
+    pointer-events:none;
+    z-index:4;
+  }
+  .terminal{
+    width:100%;
+    max-width:760px;
+    border:1px solid rgba(51,255,102,0.35);
+    background:rgba(0,20,5,0.6);
+    box-shadow:0 0 40px rgba(51,255,102,0.15), inset 0 0 60px rgba(51,255,102,0.05);
+    padding:32px 28px;
+    position:relative;
+    z-index:6;
+    border-radius:4px;
+  }
+  .topbar{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    letter-spacing:2px;
+    color:var(--amber);
+    border-bottom:1px dashed rgba(255,176,0,0.4);
+    padding-bottom:10px;
+    margin-bottom:20px;
+    text-transform:uppercase;
+  }
+  .blink{animation:blink 1s steps(2,start) infinite;}
+  @keyframes blink{to{visibility:hidden;}}
+
+  #brief{
+    font-size:16px;
+    line-height:1.7;
+    white-space:pre-wrap;
+    min-height:240px;
+    text-shadow:0 0 6px rgba(51,255,102,0.6);
+  }
+  .cursor{
+    display:inline-block;
+    width:10px; height:18px;
+    background:var(--green);
+    margin-left:2px;
+    vertical-align:middle;
+    animation:blink 0.8s steps(2,start) infinite;
+  }
+  .actions{
+    margin-top:26px;
+    text-align:center;
+    opacity:0;
+    transition:opacity 0.8s ease;
+  }
+  .actions.show{opacity:1;}
+  button{
+    background:transparent;
+    border:1px solid var(--green);
+    color:var(--green);
+    font-family:inherit;
+    font-size:16px;
+    letter-spacing:3px;
+    padding:14px 34px;
+    cursor:pointer;
+    text-transform:uppercase;
+    transition:all 0.25s ease;
+  }
+  button:hover{
+    background:var(--green);
+    color:#021002;
+    box-shadow:0 0 25px rgba(51,255,102,0.7);
+  }
+
+  /* блок загадки */
+  #mission{
+    display:none;
+    margin-top:24px;
+    border-top:1px dashed rgba(51,255,102,0.4);
+    padding-top:22px;
+    animation:fadein 1.2s ease;
+  }
+  @keyframes fadein{from{opacity:0;}to{opacity:1;}}
+  #mission h2{
+    color:var(--amber);
+    font-size:15px;
+    letter-spacing:3px;
+    margin-bottom:16px;
+  }
+  #mission p{
+    font-size:16px;
+    line-height:1.8;
+    margin-bottom:14px;
+  }
+  .riddle{
+    border-left:3px solid var(--amber);
+    padding:14px 18px;
+    background:rgba(255,176,0,0.07);
+    font-style:italic;
+    color:#ffd966;
+  }
+  .stamp{
+    margin-top:24px;
+    text-align:right;
+    color:var(--red);
+    font-size:13px;
+    letter-spacing:3px;
+    transform:rotate(-4deg);
+    opacity:0.85;
+    border:2px solid var(--red);
+    display:inline-block;
+    padding:4px 10px;
+    float:right;
+  }
+  .footer-note{
+    clear:both;
+    margin-top:30px;
+    font-size:11px;
+    color:rgba(51,255,102,0.5);
+    text-align:center;
+    letter-spacing:2px;
+  }
+</style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="topbar">
+      <span>Q-DIVISION // SECURE LINE</span>
+      <span>STATUS: <span class="blink">● LIVE</span></span>
+    </div>
+
+    <div id="brief"></div>
+    <span class="cursor" id="cursor"></span>
+
+    <div class="actions" id="actions">
+      <button id="acceptBtn">▶ ПРИНЯТЬ МИССИЮ</button>
+    </div>
+
+    <!-- ПЕРВАЯ ЗАГАДКА (появится после клика) -->
+    <div id="mission">
+      <h2>// ДОСЬЕ 001 — ПЕРВЫЙ КОНТАКТ</h2>
+      <p>Агент Sadikk, ваша личность подтверждена. Связь зашифрована.</p>
+      <p>Прототип устройства <b>«MINI EVO»</b> похищен и спрятан на вашей территории. Чтобы вернуть его, вам предстоит выйти на цепочку агентов под прикрытием. Каждый из них носит маску переплёта и хранит фрагмент кода.</p>
+      <p>Ваш первый контакт ждёт сигнала:</p>
+      <div class="riddle">
+        «Я толще всех на полке — хранитель самых длинных тайн.<br>
+        Найди меня и открой на странице, где сумма цифр равна семи.<br>
+        Там тебя ждёт следующее досье.»
+      </div>
+      <p style="margin-top:16px;">Действуйте осторожно, агент. За вами могут наблюдать.</p>
+      <div class="stamp">TOP SECRET</div>
+      <div class="footer-note">— ЭТО СООБЩЕНИЕ НЕ САМОУНИЧТОЖИТСЯ. ОНО ВАС ИСПЫТЫВАЕТ. —</div>
+    </div>
+  </div>
+
+<script>
+  const briefText =
+`> УСТАНОВКА ЗАЩИЩЁННОГО СОЕДИНЕНИЯ...
+> ШИФРОВАНИЕ: AES-256 ... ГОТОВО
+> ИДЕНТИФИКАЦИЯ ОПЕРАТИВНИКА... ПОДТВЕРЖДЕНА
+
+ДОБРО ПОЖАЛОВАТЬ, АГЕНТ.
+
+Штаб-квартира Q-Division фиксирует утечку.
+Прототип шпионского устройства похищен.
+Только вы можете вернуть его на базу.
+
+Готовы принять задание?`;
+
+  const briefEl = document.getElementById('brief');
+  const cursor = document.getElementById('cursor');
+  const actions = document.getElementById('actions');
+  const acceptBtn = document.getElementById('acceptBtn');
+  const mission = document.getElementById('mission');
+
+  let i = 0;
+  function type(){
+    if(i < briefText.length){
+      briefEl.textContent += briefText.charAt(i);
+      i++;
+      // случайная скорость печати для «живого» эффекта
+      setTimeout(type, briefText.charAt(i-1) === '\n' ? 90 : 28);
+    } else {
+      cursor.style.display = 'none';
+      actions.classList.add('show');
+    }
+  }
+  window.addEventListener('load', () => setTimeout(type, 600));
+
+  acceptBtn.addEventListener('click', () => {
+    actions.style.display = 'none';
+    briefEl.style.opacity = '0.35';
+    mission.style.display = 'block';
+    mission.scrollIntoView({behavior:'smooth'});
+  });
+</script>
+</body>
+</html>
