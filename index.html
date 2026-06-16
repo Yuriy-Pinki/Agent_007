@@ -12,19 +12,19 @@
     --bg:#050805;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{height:100%;}
+  html{min-height:100%;}
   body{
     background:var(--bg);
     color:var(--green);
     font-family:'Courier New', monospace;
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     justify-content:center;
     min-height:100vh;
-    padding:20px;
+    padding:40px 20px;
   }
-  /* мерцание/сканлайн как на старом мониторе */
   body::before{
     content:"";
     position:fixed; inset:0;
@@ -45,6 +45,44 @@
     pointer-events:none;
     z-index:4;
   }
+
+  #intro{
+    position:fixed; inset:0;
+    background:var(--bg);
+    z-index:20;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:28px;
+    text-align:center;
+    padding:20px;
+  }
+  #intro .lock{
+    font-size:13px;
+    letter-spacing:4px;
+    color:var(--amber);
+    text-transform:uppercase;
+    animation:blink 1.4s steps(2,start) infinite;
+  }
+  #connectBtn{
+    background:transparent;
+    border:1px solid var(--green);
+    color:var(--green);
+    font-family:inherit;
+    font-size:16px;
+    letter-spacing:3px;
+    padding:16px 38px;
+    cursor:pointer;
+    text-transform:uppercase;
+    transition:all 0.25s ease;
+  }
+  #connectBtn:hover{
+    background:var(--green);
+    color:#021002;
+    box-shadow:0 0 25px rgba(51,255,102,0.7);
+  }
+
   .terminal{
     width:100%;
     max-width:760px;
@@ -92,7 +130,7 @@
     transition:opacity 0.8s ease;
   }
   .actions.show{opacity:1;}
-  button{
+  button.action-btn{
     background:transparent;
     border:1px solid var(--green);
     color:var(--green);
@@ -104,13 +142,12 @@
     text-transform:uppercase;
     transition:all 0.25s ease;
   }
-  button:hover{
+  button.action-btn:hover{
     background:var(--green);
     color:#021002;
     box-shadow:0 0 25px rgba(51,255,102,0.7);
   }
 
-  /* блок загадки */
   #mission{
     display:none;
     margin-top:24px;
@@ -130,6 +167,11 @@
     line-height:1.8;
     margin-bottom:14px;
   }
+  #mission .label{
+    color:var(--amber);
+    font-weight:bold;
+    letter-spacing:1px;
+  }
   .riddle{
     border-left:3px solid var(--amber);
     padding:14px 18px;
@@ -139,7 +181,6 @@
   }
   .stamp{
     margin-top:24px;
-    text-align:right;
     color:var(--red);
     font-size:13px;
     letter-spacing:3px;
@@ -158,9 +199,120 @@
     text-align:center;
     letter-spacing:2px;
   }
+
+  /* ===== СЕЙФ / ПОЛЕ-ПАРОЛЬ ===== */
+  #safe{
+    display:none;
+    margin-top:30px;
+    border:1px solid rgba(255,176,0,0.5);
+    border-radius:4px;
+    padding:26px 22px;
+    background:rgba(255,176,0,0.05);
+    text-align:center;
+  }
+  #safe h3{
+    color:var(--amber);
+    font-size:15px;
+    letter-spacing:3px;
+    margin-bottom:10px;
+  }
+  #safe p.hint{
+    font-size:13px;
+    color:rgba(51,255,102,0.75);
+    margin-bottom:18px;
+    line-height:1.6;
+  }
+  #codeInput{
+    width:100%;
+    max-width:480px;
+    background:rgba(0,0,0,0.45);
+    border:1px solid var(--green);
+    color:var(--green);
+    font-family:inherit;
+    font-size:16px;
+    letter-spacing:2px;
+    text-align:center;
+    padding:14px 12px;
+    border-radius:3px;
+    text-transform:uppercase;
+  }
+  #codeInput:focus{
+    outline:none;
+    box-shadow:0 0 18px rgba(51,255,102,0.5);
+  }
+  #submitCode{
+    display:block;
+    margin:16px auto 0;
+    background:transparent;
+    border:1px solid var(--amber);
+    color:var(--amber);
+    font-family:inherit;
+    font-size:15px;
+    letter-spacing:3px;
+    padding:13px 30px;
+    cursor:pointer;
+    text-transform:uppercase;
+    transition:all 0.25s ease;
+  }
+  #submitCode:hover{
+    background:var(--amber);
+    color:#1a1200;
+    box-shadow:0 0 22px rgba(255,176,0,0.7);
+  }
+  #codeMsg{
+    margin-top:16px;
+    font-size:14px;
+    letter-spacing:2px;
+    min-height:20px;
+  }
+  .err{color:var(--red);}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%,60%{transform:translateX(-8px);}
+    40%,80%{transform:translateX(8px);}
+  }
+  .shake{animation:shake 0.4s;}
+
+  /* ===== ФИНАЛ — ДОСЬЕ 007 ===== */
+  #finale{
+    display:none;
+    margin-top:26px;
+    border-top:1px dashed rgba(51,255,102,0.4);
+    padding-top:24px;
+    animation:fadein 1.6s ease;
+  }
+  #finale h2{
+    color:var(--green);
+    font-size:16px;
+    letter-spacing:3px;
+    margin-bottom:18px;
+    text-shadow:0 0 10px rgba(51,255,102,0.8);
+  }
+  #finale p{font-size:16px; line-height:1.85; margin-bottom:14px;}
+  #finale .place{
+    border:1px solid var(--amber);
+    background:rgba(255,176,0,0.08);
+    color:var(--amber);
+    padding:14px 16px;
+    margin:18px 0;
+    letter-spacing:1px;
+  }
+  #finale .heart{
+    text-align:center;
+    font-size:22px;
+    margin-top:20px;
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{50%{transform:scale(1.25);}}
 </style>
 </head>
 <body>
+
+  <div id="intro">
+    <div class="lock">⌁ ЗАЩИЩЁННАЯ ЛИНИЯ // ДОСТУП ОГРАНИЧЕН ⌁</div>
+    <button id="connectBtn">▶ УСТАНОВИТЬ СОЕДИНЕНИЕ</button>
+  </div>
+
   <div class="terminal">
     <div class="topbar">
       <span>Q-DIVISION // SECURE LINE</span>
@@ -168,26 +320,54 @@
     </div>
 
     <div id="brief"></div>
-    <span class="cursor" id="cursor"></span>
+    <span class="cursor" id="cursor" style="display:none;"></span>
 
     <div class="actions" id="actions">
-      <button id="acceptBtn">▶ ПРИНЯТЬ МИССИЮ</button>
+      <button class="action-btn" id="acceptBtn">▶ ПРИНЯТЬ МИССИЮ</button>
     </div>
 
-    <!-- ПЕРВАЯ ЗАГАДКА (появится после клика) -->
+    <!-- ДОСЬЕ 001 -->
     <div id="mission">
       <h2>// ДОСЬЕ 001 — ПЕРВЫЙ КОНТАКТ</h2>
-      <p>Агент Sadikk, ваша личность подтверждена. Связь зашифрована.</p>
-      <p>Прототип устройства <b>«MINI EVO»</b> похищен и спрятан на вашей территории. Чтобы вернуть его, вам предстоит выйти на цепочку агентов под прикрытием. Каждый из них носит маску переплёта и хранит фрагмент кода.</p>
-      <p>Ваш первый контакт ждёт сигнала:</p>
+      <p>Агент Sadik, ваша личность подтверждена. Связь зашифрована. С этой секунды вы — единственный оперативник, допущенный к делу под кодовым именем <span class="label">«ХРОНОС»</span>.</p>
+      <p>В руки враждебной организации попал прототип, над которым Q-Division работал тайно много лет, — <span class="label">устройство, способное останавливать время</span>. Что именно оно делает, не знает почти никто: документы по проекту засекречены даже от нас. Известно одно — тот, кто владеет им, получает власть над самым ценным, что есть у человека. И в чужих руках эта сила опасна.</p>
+      <p>Наша разведка установила: похититель не вынес устройство за пределы вашей территории. Он поступил хитрее — <span class="label">разобрал маршрут на части</span> и спрятал подсказки среди того, что вы любите больше всего. Среди ваших книг.</p>
+      <p>Каждая книга на вашей полке теперь — агент под прикрытием. Каждая хранит один фрагмент кода. Выходите на них по очереди, идите по следу — и в конце он приведёт вас к тайнику, где спрятан прототип.</p>
+      <p>Что вы найдёте внутри — мы не вправе раскрывать заранее. Это вы должны увидеть сами.</p>
+      <p>Ваш первый контакт уже ждёт сигнала:</p>
       <div class="riddle">
-        «Я толще всех на полке — хранитель самых длинных тайн.<br>
-        Найди меня и открой на странице, где сумма цифр равна семи.<br>
-        Там тебя ждёт следующее досье.»
+        «Твой первый агент говорит на языке, что роднее всех твоему сердцу.<br>
+        Он — голос земли, вольных людей и непокорных эпох.<br>
+        Имя его — о том, что склоняется под серпом в час жатвы.<br>
+        Найди его на полке среди родных слов — самый толстый том на мове.<br>
+        Открой его там, где сумма цифр страницы равна семи.»
       </div>
-      <p style="margin-top:16px;">Действуйте осторожно, агент. За вами могут наблюдать.</p>
+      <p style="margin-top:16px;">Действуйте осторожно, агент. Время — буквально — против вас. И помните: за вами могут наблюдать.</p>
       <div class="stamp">TOP SECRET</div>
       <div class="footer-note">— ЭТО СООБЩЕНИЕ НЕ САМОУНИЧТОЖИТСЯ. ОНО ВАС ИСПЫТЫВАЕТ. —</div>
+
+      <!-- СЕЙФ -->
+      <div id="safe">
+        <h3>🔒 СЕЙФ Q-DIVISION</h3>
+        <p class="hint">Когда соберёте все пять фрагментов кода —<br>введите фразу целиком, чтобы открыть сейф с прототипом.</p>
+        <input id="codeInput" type="text" placeholder="ВВЕДИТЕ КОД ДОСТУПА" autocomplete="off" spellcheck="false">
+        <button id="submitCode">▶ ОТКРЫТЬ СЕЙФ</button>
+        <div id="codeMsg"></div>
+      </div>
+
+      <!-- ДОСЬЕ 007 -->
+      <div id="finale">
+        <h2>// ДОСЬЕ 007 — РАССЕКРЕЧЕНО ✅</h2>
+        <p>СЕЙФ ОТКРЫТ. ПРОТОТИП ОБНАРУЖЕН. ОПЕРАЦИЯ «ХРОНОС» ЗАВЕРШЕНА.</p>
+        <p>Агент Sadik, вы сделали невозможное. Пять фрагментов собраны, код принят. А теперь — правда, которую мы скрывали до последней секунды.</p>
+        <p>Устройство, способное останавливать время, действительно существует. Вы держали в руках сотни страниц, шли по следу врага — а разгадка всё это время была проще и прекраснее, чем любой шпионский гаджет.</p>
+        <p><b>Время нельзя остановить. Но можно поймать одно-единственное мгновение и сохранить его навсегда — в одном кадре.</b> Именно это умеет прототип, который вы искали. И теперь он ваш.</p>
+        <div class="place">📍 Тайник рассекречен. Прототип ждёт вас здесь:<br><b>[ВПИШИ СЮДА МЕСТО, ГДЕ СПРЯТАНА КАМЕРА]</b></div>
+        <p>Поздравляем, агент. Дело «ХРОНОС» закрыто. Отныне каждое мгновение — ваше.</p>
+        <p style="color:rgba(51,255,102,0.7);">[Пусть этот подарок поможет тебе запечатлить самые яркие моменты в твоей жизни 💚]</p>
+        <div class="heart">📸💚</div>
+        <div class="footer-note">— Q-DIVISION. КОНЕЦ ПЕРЕДАЧИ. —</div>
+      </div>
     </div>
   </div>
 
@@ -199,38 +379,142 @@
 
 ДОБРО ПОЖАЛОВАТЬ, АГЕНТ.
 
-Штаб-квартира Q-Division фиксирует утечку.
-Прототип шпионского устройства похищен.
+Штаб-квартира Q-Division фиксирует утечку
+высшего уровня секретности.
+Похищен прототип, способный остановить
+само время.
 Только вы можете вернуть его на базу.
 
 Готовы принять задание?`;
 
-  const briefEl = document.getElementById('brief');
-  const cursor = document.getElementById('cursor');
-  const actions = document.getElementById('actions');
+  const briefEl   = document.getElementById('brief');
+  const cursor    = document.getElementById('cursor');
+  const actions   = document.getElementById('actions');
   const acceptBtn = document.getElementById('acceptBtn');
-  const mission = document.getElementById('mission');
+  const mission   = document.getElementById('mission');
+  const intro     = document.getElementById('intro');
+  const connectBtn= document.getElementById('connectBtn');
+  const safe      = document.getElementById('safe');
+  const codeInput = document.getElementById('codeInput');
+  const submitCode= document.getElementById('submitCode');
+  const codeMsg   = document.getElementById('codeMsg');
+  const finale    = document.getElementById('finale');
 
+  /* ===== ЗВУК ПЕЧАТНОЙ МАШИНКИ ===== */
+  let audioCtx = null;
+  function initAudio(){
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch(e){ audioCtx = null; }
+  }
+  function clickSound(){
+    if(!audioCtx) return;
+    const now = audioCtx.currentTime;
+    const bufferSize = audioCtx.sampleRate * 0.03;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for(let i=0;i<bufferSize;i++){ data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufferSize, 3); }
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const bp = audioCtx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 1400 + Math.random()*600;
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+    noise.connect(bp); bp.connect(gain); gain.connect(audioCtx.destination);
+    noise.start(now); noise.stop(now + 0.03);
+  }
+  function dingSound(){
+    if(!audioCtx) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1800, now);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.12, now + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(now); osc.stop(now + 0.25);
+  }
+  function successSound(){
+    if(!audioCtx) return;
+    const now = audioCtx.currentTime;
+    [0,0.15,0.3].forEach((t,k)=>{
+      const osc=audioCtx.createOscillator();
+      const g=audioCtx.createGain();
+      osc.type='triangle';
+      osc.frequency.value=[660,880,1320][k];
+      g.gain.setValueAtTime(0.0001, now+t);
+      g.gain.exponentialRampToValueAtTime(0.14, now+t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, now+t+0.4);
+      osc.connect(g); g.connect(audioCtx.destination);
+      osc.start(now+t); osc.stop(now+t+0.4);
+    });
+  }
+
+  /* ===== ЭФФЕКТ ПЕЧАТИ ===== */
   let i = 0;
   function type(){
     if(i < briefText.length){
-      briefEl.textContent += briefText.charAt(i);
+      const ch = briefText.charAt(i);
+      briefEl.textContent += ch;
       i++;
-      // случайная скорость печати для «живого» эффекта
-      setTimeout(type, briefText.charAt(i-1) === '\n' ? 90 : 28);
+      if(ch === '\n'){ dingSound(); }
+      else if(ch !== ' '){ clickSound(); }
+      setTimeout(type, ch === '\n' ? 135 : 42);
     } else {
       cursor.style.display = 'none';
       actions.classList.add('show');
     }
   }
-  window.addEventListener('load', () => setTimeout(type, 600));
+
+  connectBtn.addEventListener('click', () => {
+    initAudio();
+    if(audioCtx && audioCtx.state === 'suspended'){ audioCtx.resume(); }
+    intro.style.display = 'none';
+    cursor.style.display = 'inline-block';
+    setTimeout(type, 400);
+  });
 
   acceptBtn.addEventListener('click', () => {
     actions.style.display = 'none';
     briefEl.style.opacity = '0.35';
     mission.style.display = 'block';
+    safe.style.display = 'block';
     mission.scrollIntoView({behavior:'smooth'});
   });
+
+  /* ===== ПРОВЕРКА КОДА ===== */
+
+  function normalize(s){
+    return s.trim().toUpperCase().replace(/Ё/g,'Е').replace(/\s+/g,' ');
+  }
+  const ANSWER = normalize("ВРЕМЯ ЗАМИРАЕТ В ОДНОМ КАДРЕ");
+
+  function tryCode(){
+    if(normalize(codeInput.value) === ANSWER){
+      codeMsg.textContent = "✅ КОД ПРИНЯТ. СЕЙФ ОТКРЫВАЕТСЯ...";
+      codeMsg.className = "";
+      codeMsg.style.color = "var(--green)";
+      successSound();
+      safe.style.opacity = "0.4";
+      codeInput.disabled = true;
+      submitCode.disabled = true;
+      setTimeout(()=>{
+        finale.style.display = "block";
+        finale.scrollIntoView({behavior:"smooth"});
+      }, 900);
+    } else {
+      codeMsg.textContent = "⛔ ДОСТУП ОТКЛОНЁН. ПРОВЕРЬТЕ КОД.";
+      codeMsg.className = "err";
+      safe.classList.remove("shake");
+      void safe.offsetWidth;
+      safe.classList.add("shake");
+    }
+  }
+  submitCode.addEventListener('click', tryCode);
+  codeInput.addEventListener('keydown', e => { if(e.key === 'Enter') tryCode(); });
 </script>
 </body>
 </html>
